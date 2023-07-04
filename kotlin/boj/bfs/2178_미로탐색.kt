@@ -31,11 +31,11 @@ fun main() {
     // 이동 가능한 방향 정의
     val directions = listOf(Pair(0, 1), Pair(0, -1), Pair(1, 0), Pair(-1, 0))
     // 미로 표현 배열
-    val map = Array(n) { intArrayOf() }
+    val graph = Array(n) { intArrayOf() }
     // 이동 비용 저장 배열
     val cost = Array(n) { IntArray(m) { Int.MAX_VALUE } }
 
-    repeat(n) { map[it] = reader.readLine().toCharArray().map { num -> num.digitToInt() }.toIntArray() }
+    repeat(n) { graph[it] = reader.readLine().toCharArray().map { num -> num.digitToInt() }.toIntArray() }
 
     // BFS 시작
     val queue: Queue<Pair<Int, Int>> = LinkedList()
@@ -51,12 +51,15 @@ fun main() {
             val newFirst = first + direction.first
             val newSecond = second + direction.second
 
-            if ((newFirst in (0 until n)) && (newSecond in (0 until m)) && map[newFirst][newSecond] == 1) {
+            // 좌표 범위가 넘어갈 경우 continue 처리
+            if (newFirst !in 0 until n || newSecond !in 0 until m)
+                return@forEach
+
+            if (graph[newFirst][newSecond] == 1)
                 if (cost[first][second] + 1 < cost[newFirst][newSecond]) {
                     queue.offer(Pair(newFirst, newSecond))
                     cost[newFirst][newSecond] = cost[first][second] + 1
                 }
-            }
         }
     }
 
