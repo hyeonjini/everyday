@@ -9,7 +9,6 @@ def solution():
     arr = list(map(int, input().split()))
 
     start, end = 0, 1
-    total = arr[start] + arr[end]
 
     while start <= end and end <= n:
         total = sum(arr[start:end])
